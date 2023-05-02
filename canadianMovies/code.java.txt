@@ -1,0 +1,50 @@
+import requests
+import urllib.parse
+
+api_key = 'your_api_key_here'
+
+omdb_url = 'http://www.omdbapi.com/'
+
+
+def search_movies(title):
+
+    params = {'apikey': api_key, 's': title, 'type': 'movie'}
+    url = omdb_url + '?' + urllib.parse.urlencode(params)
+
+
+    response = requests.get(url)
+    data = response.json()
+
+    if data['Response'] == 'False':
+        raise Exception(data['Error'])
+
+   
+    movies = data['Search']
+
+   
+    return movies
+
+def generate_download_link(imdb_id):
+
+    params = {'apikey': api_key, 'i': imdb_id, 'type': 'movie'}
+    url = omdb_url + '?' + urllib.parse.urlencode(params)
+
+
+    response = requests.get(url)
+    data = response.json()
+
+
+    if data['Response'] == 'False':
+        raise Exception(data['Error'])
+
+
+    download_link = data['Poster']
+
+    return download_link
+
+movie_title = 'The Godfather'
+movies = search_movies(movie_title)
+for movie in movies:
+    imdb_id = movie['imdbID']
+    download_link = generate_download_link(imdb_id)
+    print(download_link)
