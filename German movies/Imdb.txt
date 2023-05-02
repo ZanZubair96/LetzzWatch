@@ -1,0 +1,56 @@
+
+import com.sun.deploy.net.HttpRequest;
+import com.sun.deploy.net.HttpResponse;
+import sun.net.www.http.HttpClient;
+
+import java.io.IOException;
+import java.net.URI;
+import java.net.URLEncoder;
+import java.net.http.HttpClient;
+import java.net.http.HttpRequest;
+import java.net.http.HttpResponse;
+import java.nio.charset.StandardCharsets;
+import java.util.Scanner;
+
+public class Imdb {
+    public static void main(String[] args) throws IOException, InterruptedException {
+        Scanner scanner = new Scanner(System.in);
+        System.out.print("Enter the name of the movie: ");
+        String movieTitle = scanner.nextLine();
+
+        String imdbId = searchMovie(movieTitle);
+        if (imdbId == null) {
+            System.out.println("Movie not found");
+        } else {
+            String imdbUrl = "https://www.imdb.com/title/" + imdbId + "/";
+            System.out.println("IMDb link: " + imdbUrl);
+        }
+    }
+
+    private static String searchMovie(String movieTitle) throws IOException, InterruptedException {
+        String query = URLEncoder.encode(movieTitle, String.valueOf(StandardCharsets.UTF_8));
+        String imdbApiUrl = "https://imdb-api.com/en/API/SearchMovie/k_1234567/" + query;
+
+        HttpClient client = HttpClient.newHttpClient();
+        HttpRequest request = HttpRequest.newBuilder()
+                .uri(URI.create(imdbApiUrl))
+                .build();
+
+        HttpResponse response = client.send(request, HttpResponse.BodyHandlers.ofString());
+        String responseBody = response.body();
+
+        if (responseBody.contains("\"errorMessage\":\"")) {
+            // error message is returned from IMDb API
+            return null;
+        }
+
+        String imdbId = null;
+        int index = responseBody.indexOf("\"id\":\"tt");
+        if (index != -1) {
+            imdbId = responseBody.substring(index + 6, index + 15);
+        }
+
+        return imdbId;
+    }
+}
+
