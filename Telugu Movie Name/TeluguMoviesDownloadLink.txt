@@ -1,0 +1,29 @@
+package java_practice;
+
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class DoubleStringHashMap {
+    public static void main(String args[]){
+
+        Map<String, String> teluguMovies = new HashMap<>();
+
+
+        teluguMovies.put("RRR", "https://wikiinhindi.com/rrr-movie-download/");
+        teluguMovies.put("Arjun Reddy", "https://moviesflix.cx/arjun-reddy-dual-hindi/");
+        teluguMovies.put("Baahubali", "https://mkvbollyhut.blogspot.com/baahubali-1-2015-beginning-hindi-full");
+
+        Scanner sc = new Scanner(System.in);
+         String movieName = sc.nextLine();
+
+        if(teluguMovies.containsKey(movieName)) {
+
+            String link = teluguMovies.get(movieName);
+            System.out.println(movieName + " download link " + link);
+        } else {
+            System.out.println( movieName +"  This movie name not found");
+        }
+
+    }
+}
