@@ -1,0 +1,30 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+public class Kannada {
+
+
+    public static void main(String args[])
+    {
+        Map<String, String> kannada=new HashMap<String, String>();
+
+
+        kannada.put("vaarasdara", "https://www.isaimini.com.mx/movie/4035/vaarasdara-(2023)-kannada-movie.html");
+        kannada.put("Bimbisara", "https://www.isaimini.com.mx/movie/2954/bimbisara-(2022)-kannada-movie.html");
+        kannada.put("KGF", "https://7movierulz.men/kgf-chapter-1-2018-kannada-movie-watch-online-free-2253");
+    System.out.println("Please enter the Movie name");
+
+        Scanner m= new Scanner(System.in);
+        String kannadamovie = m.nextLine();
+
+        if(kannada.containsKey(kannadamovie)) {
+
+            String link = kannada.get(kannadamovie);
+            System.out.println(kannadamovie + "  movie download link " + link);
+        } else {
+            System.out.println( kannadamovie +"   movie is not here");
+        }
+
+    }
+}
+
