@@ -1,0 +1,329 @@
+//search bar html
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Movie Search</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <header>
+        <form id="form">
+
+            <input type="text" autocomplete="off" id="search" placeholder="Search" class="search">
+        </form>
+    </header>
+    <main id="main">
+   
+    </main>
+
+<!-- js here -->
+    <script src="app.js"></script>
+</body>
+</html>
+---------------------------------------------------------------------------------------------
+// Search bar css
+
+@import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;400;600&display=swap');
+
+*{
+    box-sizing: border-box;
+    
+}
+
+body{
+    margin: 0;
+    background-color: #cd094e;
+     font-family: "Poppins", sans-serif;
+}
+
+header{
+    background-color: #0615de;
+    padding: 1rem;
+    display: flex;
+    justify-content: flex-end;
+}
+
+.search {
+padding: 0.5rem 1rem;
+border-radius: 50px;
+border: 2px solid #22254b;
+background-color: transparent;
+font-family: inherit;
+color: #eee;
+font-size: 1rem;
+}
+
+.search::placeholder{
+    color: #afb2dc;
+}
+
+.search:focus{
+    outline: none;
+    background-color: #05082c;
+}
+
+
+main{
+    display: flex;
+    flex-wrap: wrap;
+}
+
+
+/* ye baad me dekhte hai */
+
+.movie{
+    box-shadow: 0 4px 5px rgba(0,0,0,0.2);
+    border-radius: 3px;
+    width: 300px;
+    background-color: #0d1dd2;
+    margin: 1rem;
+    overflow: hidden;
+    position: relative;
+
+}
+
+.movie img{
+ width: 100%;
+   
+}
+
+.movie-info{
+    display: flex;
+    justify-content: space-between;
+    padding: 0.5rem 1rem 1rem;
+    color: #eee;
+    letter-spacing: 0.5px;
+    align-items: center;
+}
+
+.movie-info h3{
+    margin: 0;
+}
+
+.movie-info span{
+    background-color: #22254b;
+    padding: 0.25rem 0.5rem;
+    border-radius: 3px;
+    font-weight: bold;
+}
+
+.movie-info span.green{
+    color: rgb(46, 194, 46);
+}
+.movie-info span.orange{
+ color: orange;
+}
+.movie-info span.red{
+    color: red;
+
+}
+
+.overview{
+    position: absolute;
+    top: 0;
+    right: 0;
+    left: 0;
+    bottom: 0;
+    background-color: #fff;
+    padding: 2rem;
+    transform: translateY(100%);
+    transition: transform 1s ease-in;
+    max-width: 100%;
+    overflow: auto;
+
+
+
+}
+
+.movie:hover .overview{
+    transform: translateY(0);
+
+}
+
+.overview h4{
+    margin-top: 0;
+}
+-------------------------------------------------------------------------------------------
+// Search bar Javascript 
+
+const APIURL = "https://api.themoviedb.org/3/discover/movie?sort_by=popularity.desc&api_key=04c35731a5ee918f014970082a0088b1&page=1";
+
+const IMGPATH = "https://image.tmdb.org/t/p/w1280";
+
+const SEARCHAPI = "https://api.themoviedb.org/3/search/movie?&api_key=04c35731a5ee918f014970082a0088b1&query=";
+
+// ye HTML WALE TAG
+const main = document.getElementById("main");
+const form = document.getElementById("form");
+const search = document.getElementById("search");
+
+///initalyy get fav movies
+getMovies(APIURL);
+
+async function getMovies(url) {
+  const resp = await fetch(url);
+  const respData = await resp.json();
+
+  // movie aa gyi
+  console.log(respData);
+  // yaha pe show karenge
+  showMovies(respData.results);
+
+}
+
+function showMovies(movies) {
+  //clear main
+  main.innerHTML = "";
+  movies.forEach((movie) => {
+    const { poster_path, title, vote_average, overview } = movie;
+    // raja
+    const movieEl = document.createElement("div");
+    movieEl.classList.add("movie");
+
+
+    movieEl.innerHTML = `
+       <img src="${IMGPATH + poster_path}" alt="${title}"/>
+
+     <div class="movie-info">
+         <h3>${title}</h3>
+         <span class="${getClassByRate(vote_average)}">${vote_average}</span>
+     </div> 
+
+     <div class="overview">
+
+     <h2>Overview:</h2>
+     ${overview}
+     </div>
+     `;
+
+    main.appendChild(movieEl)
+  });
+
+}
+
+
+function getClassByRate(vote) {
+  if (vote >= 8) {
+    return 'green';
+  } else if (vote >= 5) {
+    return 'orange'
+  } else {
+    return 'red';
+  }
+
+}
+
+
+form.addEventListener("submit", (e) => {
+  e.preventDefault();
+
+
+  const searchTerm = search.value;
+
+  if (searchTerm) {
+
+    getMovies(SEARCHAPI + searchTerm);
+
+    search.value = "";
+  }
+});
+--------------------------------------------------------------------------------------------
+//Auto download the link
+package com.journaldev.files;
+
+import java.io.BufferedInputStream;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.net.URL;
+import java.nio.channels.Channels;
+import java.nio.channels.ReadableByteChannel;
+
+public class JavaDownloadFileFromURL {
+
+    public static void main(String[] args) {
+        String url = "https://www.journaldev.com/sitemap.xml";
+        
+        try {
+            downloadUsingNIO(url, "/Users/pankaj/sitemap.xml");
+            
+            downloadUsingStream(url, "/Users/pankaj/sitemap_stream.xml");
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private static void downloadUsingStream(String urlStr, String file) throws IOException{
+        URL url = new URL(urlStr);
+        BufferedInputStream bis = new BufferedInputStream(url.openStream());
+        FileOutputStream fis = new FileOutputStream(file);
+        byte[] buffer = new byte[1024];
+        int count=0;
+        while((count = bis.read(buffer,0,1024)) != -1)
+        {
+            fis.write(buffer, 0, count);
+        }
+        fis.close();
+        bis.close();
+    }
+
+    private static void downloadUsingNIO(String urlStr, String file) throws IOException {
+        URL url = new URL(urlStr);
+        ReadableByteChannel rbc = Channels.newChannel(url.openStream());
+        FileOutputStream fos = new FileOutputStream(file);
+        fos.getChannel().transferFrom(rbc, 0, Long.MAX_VALUE);
+        fos.close();
+        rbc.close();
+    }
+-----------------------------------------------------------------------------------------
+//Get File download 
+
+<!DOCTYPE html>
+<html>
+   <body>
+      <style>
+         p {
+         color: green;
+         }
+      </style>
+      <p>How to trigger a file download when
+         clicking an HTML button or JavaScript?
+      <p>
+         <!-- GFG is the name of the
+            file to be downloaded-->
+         <a 
+  download="Pod-People-Podcast-Episode-12-Feed-Me-Seymour.mp3"
+  href="https://www.dropbox.com/s/txf5933cwxhv1so6/12-final-v5-RADIO-EDIT.m4a?dl=0">
+  Download Episode 12
+         <button type="button">Download</button>
+         </a>
+   </body>
+</html>
+------------------------------------------------------------------------------------------------------------------------------
+a[download] {
+  color: hsla(216, 70%, 53%, 1);
+  text-decoration: underline;
+}
+
+a[download]::before {
+  content: url('../icons/icon-download.svg');
+  height: 1em;
+  position: relative;
+  top: 0.75em;
+  right: 0.5em;
+  width: 1em;
+}
+
+a[download]:hover,
+a[download]:focus {
+  text-decoration: none;
+}
+<a 
+  download="Pod-People-Podcast-Episode-12-Feed-Me-Seymour.mp3"
+  href="https://www.dropbox.com/s/txf5933cwxhv1so6/12-final-v5-RADIO-EDIT.m4a?dl=0">
+  Download Episode 12
+</a>
+--------------------------------------------------------------------------------------------------------------------------------------
