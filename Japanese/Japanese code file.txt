@@ -1,0 +1,24 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+
+public class Japanese_movies {
+    public static void main(String args[]) {
+        Map<String, String> japanese = new HashMap<String, String>();
+        japanese.put("Sultry Assassin", "https://hitovik.com/en/asia-films/japan-films/4334-strastnaya-ubiyca-1-sultry-assassin-the-aphrodisiac-kill-1-yaponiya.html");
+        japanese.put("Bilocation", "https://hitovik.com/en/horrors/3811-bilokaciya-bilocation-uzhasy-bdrip-avc.html");
+
+        System.out.println("enter the japanese Movie name");
+
+        Scanner s = new Scanner(System.in);
+        String nameofmovie = s.nextLine();
+        if (japanese.containsKey(nameofmovie)) {
+
+            String link = japanese.get(nameofmovie);
+            System.out.println(nameofmovie + "  Download link " + link);
+        } else {
+            System.out.println(nameofmovie + "   movie not available");
+        }
+
+    }
+}
