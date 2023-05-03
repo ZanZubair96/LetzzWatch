@@ -1,0 +1,29 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Scanner;
+public class pradeep {
+
+
+    public static void main(String args[]) {
+        Map<String, String> chinese = new HashMap<String, String>();
+
+
+        chinese.put("The Wandering Earth II (2023)", "https://www.stagatv.com/the-wandering-earth-ii-2023/");
+        chinese.put("Warriors of Future (2022)", "https://www.stagatv.com/warriors-of-future-2022/");
+        chinese.put("Blind War (2022)", "https://www.stagatv.com/blind-war-2022/");
+        chinese.put("The EOD Squad (2022)", "https://www.stagatv.com/the-eod-squad/");
+
+        System.out.println("Please enter the Movie name");
+
+        Scanner p = new Scanner(System.in);
+        String cnmovie = p.nextLine();
+
+        if (chinese.containsKey(cnmovie)) {
+            String link = chinese.get(cnmovie);
+            System.out.println(cnmovie + "  movie download link " + link);
+        } else {
+            System.out.println(cnmovie + "   movie is not here");
+        }
+
+    }
+}
