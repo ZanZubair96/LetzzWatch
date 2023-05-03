@@ -14,8 +14,8 @@ public class Kannada {
         kannada.put("KGF", "https://7movierulz.men/kgf-chapter-1-2018-kannada-movie-watch-online-free-2253");
     System.out.println("Please enter the Movie name");
 
-        Scanner s = new Scanner(System.in);
-        String kannadamovie = s.nextLine();
+        Scanner m= new Scanner(System.in);
+        String kannadamovie = m.nextLine();
 
         if(kannada.containsKey(kannadamovie)) {
 
