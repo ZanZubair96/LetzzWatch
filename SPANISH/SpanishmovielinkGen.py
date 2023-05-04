@@ -21,5 +21,8 @@ def get_movie_links(movie_name):
         print(f"{title}: {link}")
 
 # Ask user for a movie name and get its links
-movie_name = input("Enter a movie name: ")
+movie_name = input("Enter a movie name which is in spanish language in spanish: ")
 get_movie_links(movie_name)
+
+
+#you need to enter the movie name after run 
